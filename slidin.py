@@ -26,22 +26,24 @@ class User(db.Model):
     #one to many relationship, one user to many images
     posts = db.relationship('UserImagePost', backref='author', lazy=True)
 
-    #how our objects are printed out
-    def __rep__(self):
+    #how our objects are printed out  
+    def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 class UserImagePost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.For)
-    #email = db.Column(db.String(120), unique=True, nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    #email = db.Column(db.String(120), unique=True, nullable=False) 
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     #password = db.Column(db.String(60), nullable=False)   
 
 
 
-    def __rep__(self):
-        return f"User('{self.username}', '{self.date_posted}', '{self.image_file}')"
+    def __repr__(self):
+        return f"UserImagePost('{self.user_id}', '{self.date_posted}', '{self.image_file}')"
 posts = [
     {
         'date': 'this is a date',
