@@ -6,14 +6,15 @@ def load_user(user_id):
 
 class User(db.Model):
     #perhaps set username as primary key?
+    __tablename__ = "User_Database"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20),  unique=True, nullable=False)
-
 #     #one to many relationship, one user to many images
-    __tablename__ = 'connections'
-    parent_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    data = db.Column(db.String(50))
-    users = db.relationship("user")
+    parent_id = db.Column(db.Integer, db.ForeignKey('username.id'))
+    connection = db.Column(db.String(50))
+    users = db.relationship("User")
+
+
 #     posts = db.relationship('UserImagePost', backref='author', lazy=True)
 
 # class UserImagePost(db.Model):
