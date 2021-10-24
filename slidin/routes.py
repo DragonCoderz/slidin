@@ -1,5 +1,6 @@
 from flask import  render_template, url_for, flash, redirect
-from slidin import app
+from wtforms.validators import Email
+from slidin import app, db, bycrypt
 from slidin.models import User, UserImagePost
 from slidin.forms import RegistrationForm, LoginForm
 
@@ -25,8 +26,12 @@ def search():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}', 'success')
-        return redirect(url_for('userProfile'))
+        hashed_password = bycrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password,firstName=form.firstName.data, lastName=form.lastName.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Your account has been created! You are now able to login', 'success')
+        return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
 @app.route("/login", methods = ['GET', 'POST'])
