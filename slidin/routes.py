@@ -21,8 +21,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         s3 = boto3.client('s3')
-        hashed_password = bycrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password,firstName=form.firstName.data, lastName=form.lastName.data)
+        user = User(username=form.username.data)
         img = request.files['file']
         if img:
             filename = secure_filename(img.filename)
@@ -38,14 +37,3 @@ def register():
         flash('Your account has been created! You are now able to login', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-
-@app.route("/login", methods = ['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        if form.email.data == 'admin@slidin.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('userProfile'))
-        else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
