@@ -10,6 +10,10 @@ class User(db.Model):
     username = db.Column(db.String(20),  unique=True, nullable=False)
 
 #     #one to many relationship, one user to many images
+    __tablename__ = 'connections'
+    parent_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    data = db.Column(db.String(50))
+    users = db.relationship("user")
 #     posts = db.relationship('UserImagePost', backref='author', lazy=True)
 
 # class UserImagePost(db.Model):
