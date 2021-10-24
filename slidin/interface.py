@@ -10,6 +10,7 @@ def add_profile(username, pfp):
 
 def upload_picture(photo):
     detected_faces=add_faces_to_collection(bucket,photo,collection_id,5)
+    faces_found = []
     for face in detected_faces:
         face_id = face['Face']['FaceId']
         matched_faces=search_faces_in_collection(face_id, collection_id)
@@ -17,5 +18,8 @@ def upload_picture(photo):
             match = match['Face']['FaceId']
             if match in id_to_username:
                 id_to_username[face_id] = id_to_username[match]
+                faces_found.append(id_to_username[face_id])
                 break
+
+    return faces_found
 

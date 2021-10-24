@@ -97,6 +97,13 @@
                 {{ form.confirm_Password(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+     <p class="card-text">Choose a profile picture</p>
+        <input type="file" name="file" value="file">
+        <hr>
+   <input type="submit" name="upload" value="Upload" class="btn btn-success">
+</form>
+{{msg}}
         </fieldset>
         <div class="form-group">
             {{ form.submit(class="btn btn-outline-info") }}
